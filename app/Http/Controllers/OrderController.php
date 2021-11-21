@@ -94,7 +94,7 @@ class OrderController extends Controller
          $delivery_boys = User::where('city', $order_shipping_address->city)
                 ->where('user_type', 'delivery_boy')
                 ->get();
-         
+
          return view('backend.sales.all_orders.show', compact('order', 'delivery_boys'));
     }
 
@@ -278,7 +278,7 @@ class OrderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-     
+
     public function store(Request $request)
     {
         $order = new Order;
@@ -288,7 +288,7 @@ class OrderController extends Controller
         else{
             $order->guest_id = mt_rand(100000, 999999);
         }
-        
+
         $carts = Cart::where('user_id', Auth::user()->id)
                 // ->where('owner_id', $request->owner_id)
                 ->get();
@@ -354,9 +354,9 @@ class OrderController extends Controller
                 $order_detail->tax = $cartItem['tax'] * $cartItem['quantity'];
                 $order_detail->shipping_type = $cartItem['shipping_type'];
                 $order_detail->product_referral_code = $cartItem['product_referral_code'];
-                
+
                 $order_detail->shipping_cost = $cartItem['shipping_cost'];
-                
+
                 if($product->is_quantity_multiplied == 1 && get_setting('shipping_type') == 'product_wise_shipping') {
                     $order_detail->shipping_cost = $order_detail->shipping_cost * $cartItem['quantity'];
                 }
@@ -372,8 +372,8 @@ class OrderController extends Controller
 
                 $product->num_of_sale++;
                 $product->save();
-                
-                if (\App\Addon::where('unique_identifier', 'affiliate_system')->first() != null && 
+
+                if (\App\Addon::where('unique_identifier', 'affiliate_system')->first() != null &&
                         \App\Addon::where('unique_identifier', 'affiliate_system')->first()->activated) {
                     if($order_detail->product_referral_code) {
                         $referred_by_user = User::where('referral_code', $order_detail->product_referral_code)->first();
@@ -391,10 +391,10 @@ class OrderController extends Controller
                 $order->grand_total -= $carts->sum('discount');
                 $order->club_point = Session::get('club_point');
                 $order->coupon_discount = $carts->sum('discount');
-                
+
                 $clubpointController = new ClubPointController;
                 $clubpointController->deductClubPoints($order->user_id, Session::get('club_point'));
-                
+
                 $coupon_usage = new CouponUsage;
                 $coupon_usage->user_id = Auth::user()->id;
                 $coupon_usage->coupon_id = Coupon::where('code', $carts->first()->coupon_code)->first()->id;
@@ -438,7 +438,7 @@ class OrderController extends Controller
             $request->session()->put('order_id', $order->id);
         }
     }
-     
+
 //     public function store(Request $request)
 //     {
 //         $order = new Order;
@@ -448,14 +448,14 @@ class OrderController extends Controller
 //         else{
 //             $order->guest_id = mt_rand(100000, 999999);
 //         }
-        
+
 //         $carts = Cart::where('user_id', Auth::user()->id)
 //                 ->where('owner_id', $request->owner_id)
 //                 ->get();
 //                  $carts = Cart::where('owner_id', $request->owner_id)
 //                 ->get();
 //         $shipping_info = Address::where('id', @$carts[0]['address_id'])->first();
-        
+
 //         if( $shipping_info){
 //              $shipping_info->name = @Auth::user()->name;
 //         $shipping_info->email = @Auth::user()->email;
@@ -468,7 +468,7 @@ class OrderController extends Controller
 //         $order->seller_id = $request->owner_id;
 //         $order->shipping_address = json_encode($shipping_info);
 //         }
-       
+
 
 //         $order->payment_type = $request->payment_option;
 //         $order->delivery_viewed = '0';
@@ -526,9 +526,9 @@ class OrderController extends Controller
 //                 $order_detail->tax = $cartItem['tax'] * $cartItem['quantity'];
 //                 $order_detail->shipping_type = $cartItem['shipping_type'];
 //                 $order_detail->product_referral_code = $cartItem['product_referral_code'];
-                
+
 //                 $order_detail->shipping_cost = $cartItem['shipping_cost'];
-                
+
 //                 if($product->is_quantity_multiplied == 1 && get_setting('shipping_type') == 'product_wise_shipping') {
 //                     $order_detail->shipping_cost = $order_detail->shipping_cost * $cartItem['quantity'];
 //                 }
@@ -544,8 +544,8 @@ class OrderController extends Controller
 
 //                 $product->num_of_sale++;
 //                 $product->save();
-                
-//                 if (\App\Addon::where('unique_identifier', 'affiliate_system')->first() != null && 
+
+//                 if (\App\Addon::where('unique_identifier', 'affiliate_system')->first() != null &&
 //                         \App\Addon::where('unique_identifier', 'affiliate_system')->first()->activated) {
 //                     if($order_detail->product_referral_code) {
 //                         $referred_by_user = User::where('referral_code', $order_detail->product_referral_code)->first();
@@ -563,10 +563,10 @@ class OrderController extends Controller
 //                 $order->grand_total -= $carts->sum('discount');
 //                 $order->club_point = Session::get('club_point');
 //                 $order->coupon_discount = $carts->sum('discount');
-                
+
 //                 $clubpointController = new ClubPointController;
 //                 $clubpointController->deductClubPoints($order->user_id, Session::get('club_point'));
-                
+
 //                 $coupon_usage = new CouponUsage;
 //                 $coupon_usage->user_id = Auth::user()->id;
 //                 $coupon_usage->coupon_id = Coupon::where('code', $carts->first()->coupon_code)->first()->id;
@@ -654,13 +654,13 @@ class OrderController extends Controller
         if($order != null){
             foreach($order->orderDetails as $key => $orderDetail){
                 try {
-                    
+
                     $product_stock = ProductStock::where('product_id', $orderDetail->product_id)->where('variant', $orderDetail->variation)->first();
                     if($product_stock != null){
                         $product_stock->qty += $orderDetail->quantity;
                         $product_stock->save();
                     }
-                    
+
                 } catch (\Exception $e) {
 
                 }
@@ -689,7 +689,7 @@ class OrderController extends Controller
         $order->delivery_viewed = '0';
         $order->delivery_status = $request->status;
         $order->save();
-        
+
         if(Auth::user()->user_type == 'seller') {
             foreach($order->orderDetails->where('seller_id', Auth::user()->id) as $key => $orderDetail){
                 $orderDetail->delivery_status = $request->status;
@@ -708,12 +708,12 @@ class OrderController extends Controller
         }
         else {
             foreach ($order->orderDetails as $key => $orderDetail) {
-                
+
                 $orderDetail->delivery_status = $request->status;
                 $orderDetail->save();
 
                 if ($request->status == 'cancelled') {
-//                    
+//
                     $product_stock = ProductStock::where('product_id', $orderDetail->product_id)
                             ->where('variant', $orderDetail->variation)
                             ->first();
@@ -727,17 +727,17 @@ class OrderController extends Controller
                 if (\App\Addon::where('unique_identifier', 'affiliate_system')->first() != null && \App\Addon::where('unique_identifier', 'affiliate_system')->first()->activated) {
                     if (($request->status == 'delivered' || $request->status == 'cancelled') &&
                             $orderDetail->product_referral_code) {
-                        
+
                         $no_of_delivered = 0;
                         $no_of_canceled = 0;
-                        
+
                         if($request->status == 'delivered') {
                             $no_of_delivered = $orderDetail->quantity;
                         }
                         if($request->status == 'cancelled') {
                             $no_of_canceled = $orderDetail->quantity;
                         }
-                        
+
                         $referred_by_user = User::where('referral_code', $orderDetail->product_referral_code)->first();
 
                         $affiliateController = new AffiliateController;
@@ -754,10 +754,10 @@ class OrderController extends Controller
             } catch (\Exception $e) {
             }
         }
-        
-        if (\App\Addon::where('unique_identifier', 'delivery_boy')->first() != null && 
+
+        if (\App\Addon::where('unique_identifier', 'delivery_boy')->first() != null &&
                 \App\Addon::where('unique_identifier', 'delivery_boy')->first()->activated) {
-            
+
             if(Auth::user()->user_type == 'delivery_boy') {
                 $deliveryBoyController = new DeliveryBoyController;
                 $deliveryBoyController->store_delivery_history($order);
@@ -812,23 +812,23 @@ class OrderController extends Controller
         }
         return 1;
     }
-    
+
     public function assign_delivery_boy(Request $request) {
-        if (\App\Addon::where('unique_identifier', 'delivery_boy')->first() != null && 
+        if (\App\Addon::where('unique_identifier', 'delivery_boy')->first() != null &&
                 \App\Addon::where('unique_identifier', 'delivery_boy')->first()->activated) {
-            
+
             $order = Order::findOrFail($request->order_id);
             $order->assign_delivery_boy = $request->delivery_boy;
             $order->delivery_history_date = date("Y-m-d H:i:s");
             $order->save();
-            
+
             $delivery_history = \App\DeliveryHistory::where('order_id', $order->id)
                     ->where('delivery_status', $order->delivery_status)
                     ->first();
-            
+
             if(empty($delivery_history)){
                 $delivery_history = new \App\DeliveryHistory;
-                
+
                 $delivery_history->order_id         = $order->id;
                 $delivery_history->delivery_status  = $order->delivery_status;
                 $delivery_history->payment_type     = $order->payment_type;
@@ -836,33 +836,33 @@ class OrderController extends Controller
             $delivery_history->delivery_boy_id  = $request->delivery_boy;
 
             $delivery_history->save();
-            
+
             if(env('MAIL_USERNAME') != null && get_setting('delivery_boy_mail_notification') == '1') {
                 $array['view'] = 'emails.invoice';
                 $array['subject'] = translate('You are assigned to delivery an order. Order code').' - '.$order->code;
                 $array['from'] = env('MAIL_FROM_ADDRESS');
                 $array['order'] = $order;
-            
+
                 try {
                     Mail::to($order->delivery_boy->email)->queue(new InvoiceEmailManager($array));
                 } catch (\Exception $e) {
 
                 }
             }
-            
-            if (\App\Addon::where('unique_identifier', 'otp_system')->first() != null && 
-                    \App\Addon::where('unique_identifier', 'otp_system')->first()->activated && 
+
+            if (\App\Addon::where('unique_identifier', 'otp_system')->first() != null &&
+                    \App\Addon::where('unique_identifier', 'otp_system')->first()->activated &&
                     get_setting('delivery_boy_otp_notification') == '1') {
                 try {
-                    sendSMS($order->delivery_boy->phone, 
-                            env('APP_NAME'), 
+                    sendSMS($order->delivery_boy->phone,
+                            env('APP_NAME'),
                             'You are assigned to delivery an order. Order code : '.$order->code);
                 } catch (\Exception $e) {
-                    
+
                 }
             }
         }
-        
+
         return 1;
     }
 }

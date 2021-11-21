@@ -7,8 +7,8 @@ use App\Product;
 use App\SubSubCategory;
 use App\Category;
 use App\Cart;
-use Auth;
-use Session;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use App\Color;
 use Cookie;
 
@@ -35,8 +35,8 @@ class CartController extends Controller
             $temp_user_id = $request->session()->get('temp_user_id');
             $carts = Cart::where('temp_user_id', $temp_user_id)->get();
         }
-        
-        
+
+
         return view('frontend.view_cart', compact('categories', 'carts'));
         //dd($cart->all());
         // $categories = Category::all();
@@ -195,13 +195,13 @@ class CartController extends Controller
 
     //     return array('status' => 1, 'view' => view('frontend.partials.addedToCart', compact('product', 'data'))->render());
     // }
-    
+
     public function addToCart(Request $request)
     {
         $product = Product::find($request->id);
         $carts = array();
         $data = array();
-        
+
         if(auth()->user() != null) {
             $user_id = Auth::user()->id;
             $data['user_id'] = $user_id;
@@ -216,11 +216,11 @@ class CartController extends Controller
             $data['temp_user_id'] = $temp_user_id;
             $carts = Cart::where('temp_user_id', $temp_user_id)->get();
         }
-        
+
 //        $data['id'] = $product->id;
         $data['product_id'] = $product->id;
         $data['owner_id'] = $product->user_id;
-        
+
         $str = '';
         $tax = 0;
 
@@ -315,7 +315,7 @@ class CartController extends Controller
         if(Cookie::has('referred_product_id') && Cookie::get('referred_product_id') == $product->id) {
             $data['product_referral_code'] = Cookie::get('product_referral_code');
         }
-        
+
         if($carts && count($carts) > 0){
             $foundInCart = false;
 
@@ -328,7 +328,7 @@ class CartController extends Controller
                     }
                     if(($str != null && $cartItem['variation'] == $str) || $str == null){
                         $foundInCart = true;
-                        
+
                         $cartItem['quantity'] += $request['quantity'];
                         $cartItem->save();
                     }
@@ -350,7 +350,7 @@ class CartController extends Controller
     {
         Cart::where('id',$request->id)->delete();
         // Cart::destroy($request->id);
-        
+
         if(auth()->user() != null) {
             $user_id = Auth::user()->id;
             $carts = Cart::where('user_id', $user_id)->get();
@@ -358,8 +358,8 @@ class CartController extends Controller
             $temp_user_id = $request->session()->get('temp_user_id');
             $carts = Cart::where('temp_user_id', $temp_user_id)->get();
         }
-        
-        
+
+
         return view('frontend.partials.cart_details', compact('carts'));
     }
     // public function removeFromCart(Request $request)
@@ -377,11 +377,11 @@ class CartController extends Controller
     public function updateQuantity(Request $request)
     {
         $object = Cart::findOrFail($request->id);
-        
+
         if($object['id'] == $request->id){
             $product = \App\Product::find($object['product_id']);
             // if($object['variant'] != null && $product->variant_product){
-            
+
             $product_stock = $product->stocks->where('variant', $object['variation'])->first();
             $quantity = $product_stock->qty;
             if($quantity >= $request->quantity) {
@@ -389,10 +389,10 @@ class CartController extends Controller
                     $object['quantity'] = $request->quantity;
                 }
             }
-            
+
             $object->save();
         }
-        
+
         if(auth()->user() != null) {
             $user_id = Auth::user()->id;
             $carts = Cart::where('user_id', $user_id)->get();
@@ -400,7 +400,7 @@ class CartController extends Controller
             $temp_user_id = $request->session()->get('temp_user_id');
             $carts = Cart::where('temp_user_id', $temp_user_id)->get();
         }
-        
+
         return view('frontend.partials.cart_details', compact('carts'));
     }
     // public function updateQuantity(Request $request)
