@@ -860,7 +860,7 @@ if (! function_exists('my_asset')) {
             return Storage::disk('s3')->url($path);
         }
         else {
-            return app('url')->asset('public/'.$path, $secure);
+            return app('url')->asset($path, $secure);
         }
     }
 }
@@ -875,7 +875,7 @@ if (! function_exists('static_asset')) {
      */
     function static_asset($path, $secure = null)
     {
-        return app('url')->asset('public/'.$path, $secure);
+        return app('url')->asset($path, $secure);
     }
 }
 
@@ -906,7 +906,7 @@ if (!function_exists('getFileBaseURL')) {
             return env('AWS_URL').'/';
         }
         else {
-            return getBaseURL().'public/';
+            return getBaseURL();
         }
     }
 }
