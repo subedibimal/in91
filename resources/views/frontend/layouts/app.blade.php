@@ -212,6 +212,91 @@
 
 	
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw==" crossorigin="anonymous"></script>
+    {{-- {{ dd($cities) }} --}}
+ @if(!empty($cities))
+<script type="text/javascript">
+    
+        let cities = {!! $cities !!};
+        let allSubCities = {!! $subCities !!};
+        // console.log(allsubCities);
+        $('#maincategory').on('change', function(){
+            // alert('sdjjd');
+            let city = $('#maincategory :selected').val();
+            // console.log(city);
+            // console.log('hello');
+            
+
+            let options = "<option disabled='true' selected>Select Sub City </option>";
+            console.log(allSubCities);
+            Object.keys(allSubCities).forEach(function eachKey(key) {
+                console.log(allSubCities[key]);
+                if(city == allSubCities[key].city_id){
+                    console.log("ok");
+                    options += `
+                    <option value="${ allSubCities[key].id }"> ${ allSubCities[key].name }</option>
+                    `;
+                }     
+            });
+            $('#subCate').html(options);
+        });
+
+        
+
+</script>
+@endif
+
+       {{-- @if(!empty($countries))
+    <script>
+        alert('shdhd');
+        console.log("asd");
+        let countries = {!! $countries !!};
+        let allCities = {!! $cities !!};
+        let allsubCities = {!! $subCities !!};
+       
+        $('#maincategory').on('change', function(){
+            alert('sdjjd');
+            let country = $('#maincategory :selected').val();
+            if(!this.length == 0){
+    $('#maincategory').removeClass("border-danger").addClass("border-success");
+  }
+            console.log(country);
+            console.log('hello');
+            
+
+            let options = "<option disabled='true' selected>Select City </option>";
+            console.log(allCities);
+            Object.keys(allCities).forEach(function eachKey(key) {
+                console.log(allCities[key]);
+                if(country == allCities[key].country_id){
+                    console.log("ok");
+                    options += `
+                    <option value="${ allCities[key].id }"> ${ allCities[key].name }</option>
+                    `;
+                }     
+            });
+            $('#subCate').html(options);
+        });
+        // for child Category
+         $('#subCate').on('change', function(){
+            let cityId = $('#subCate :selected').val();
+            console.log(cityId);
+            console.log('hello');
+            
+
+            let options = "<option disabled='true' selected>Select Child Category </option>";
+            Object.keys(allSubCities).forEach(function eachKey(key) {
+                console.log(allSubCities[key]);
+                if(cityId == allSubCities[key].city_id){
+                  if(!this.length == 0){
+    $('#subCate').removeClass("border-danger").addClass("border-success");
+    var childCate = $('#childCate :selected').val();
+    console.log(childCate);
+
+  
+
+  }
+  </script>
+  @endif --}}
     
     <script type="text/javascript">
         
@@ -757,6 +842,7 @@
 
     </script>
     @yield('script')
+
 
     @php
         echo get_setting('footer_script');

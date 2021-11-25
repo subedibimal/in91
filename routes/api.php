@@ -134,6 +134,14 @@ Route::prefix('v2')->group(function () {
         Route::post('change-delivery-status', 'Api\V2\DeliveryBoyController@change_delivery_status')->middleware('auth:api');
     });
 
+    //By Ruban
+    //customer
+        Route::apiResource('classified-products', 'Api\V2\ClassifiedProductController')->middleware('auth:api');
+        Route::match(['put','patch'],'classified-products\{id}\updatePublished', 'Api\V2\ClassifiedProductController@updatePublished')->middleware('auth:api');
+
+
+    //end
+
 
     Route::apiResource('banners', 'Api\V2\BannerController')->only('index');
 

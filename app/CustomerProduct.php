@@ -7,6 +7,10 @@ use App;
 
 class CustomerProduct extends Model
 {
+    protected $fillable = ['name','status','category_id','brand_id',
+        'unit','conditon','location','tags','photos','thumbnail_img','video_provider','video_link',
+        'meta_title','meta_description','unit_price','description','pdf'];
+
     public function getTranslation($field = '', $lang = false){
       $lang = $lang == false ? App::getLocale() : $lang;
       $customer_product_translations = $this->hasMany(CustomerProductTranslation::class)->where('lang', $lang)->first();

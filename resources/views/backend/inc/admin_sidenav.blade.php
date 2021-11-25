@@ -870,6 +870,11 @@
                                         <span class="aiz-side-nav-text">{{translate('Shipping Cities')}}</span>
                                     </a>
                                 </li>
+                                <li class="aiz-side-nav-item">
+                                    <a href="{{route('sub-city.index')}}" class="aiz-side-nav-link {{ areActiveRoutes(['sub-city.index','sub-city.edit','sub-city.update'])}}">
+                                        <span class="aiz-side-nav-text">{{translate('Shipping Sub Cities')}}</span>
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                         

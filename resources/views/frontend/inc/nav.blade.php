@@ -712,21 +712,37 @@
                     <a class="btn btn-success px-5 delivery-address-btn" onclick="onDeliveryAddressBtnClick()" style="background: #fff !important; color: #27C7D8 !important; border: 2px solid #27C7D8;">
                         City
                     </a>
-                    <a class="btn btn-success px-5" onclick="onDeliveryPincodeBtnClick()" style="background: #27C7D8 !important; color: #fff !important;" >
+                    {{-- <a class="btn btn-success px-5" onclick="onDeliveryPincodeBtnClick()" style="background: #27C7D8 !important; color: #fff !important;" >
                         Pincode
-                    </a>
+                    </a> --}}
                 </div>
                 <span class="d-block mb-2">Where would you like to get the product delivered?</span>
+          
+                <div class="form-group">
+                    <label for="country_id"> Select City</label>
+                    <select name="country_id" class="form-control" id="maincategory">
+                        <option selected>Select</option>
+                        @forelse($cities as $city)
+                        <option value="{{ $city->id }}">{{ $city->name }} </option>
+                        @empty
+                        @endforelse
+                        
+                    </select>
+                </div>
+                 <div class="form-group">
+                    <label for="city_id"> Select Sub City</label>
+                    <select name="city_id" class="form-control" id="subCate">
+                        <option selected>Select</option>
+                       
+                        
+                    </select>
+                </div>
+                 
              
-                  <div class="form-group">
-                      <span class="show" id="delivery-address-input"><input type="text" name="address" value="@if(Auth::check()) {{ Auth::user()->address }} @endif" class="form-control" placeholder="Enter City"></span>
-                  </div>
-                  <div class="form-group">
-                      <span class="hide" id="delivery-pincode-input"><input type="text" name="postal_code" value="@if(Auth::check()) {{ Auth::user()->postal_code }} @endif" class="form-control" placeholder="Enter Pincode"></span>
-                  </div>
+                 
             </div>
             
-            <input type="hidden" name="key" value="daddress" id="daddress">
+            
             
              <!--Modal footer -->
             <div class="modal-footer">
@@ -740,4 +756,6 @@
       </div>
     </div>
   </div>
+
+
 
