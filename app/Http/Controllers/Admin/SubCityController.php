@@ -19,8 +19,8 @@ class SubCityController extends Controller
     {
         $subCities = SubCity::latest()->with(['city'])->get();
         $cities = City::paginate(15);
-        $countries = Country::where('status', 1)->with(['cities'])->get();
-         return view('backend.setup_configurations.sub-city.index', compact('subCities','cities','countries'));
+        // $countries = Country::where('status', 1)->with(['cities'])->get();
+         return view('backend.setup_configurations.sub-city.index', compact('subCities','cities'));
     }
 
     /**
@@ -73,7 +73,9 @@ class SubCityController extends Controller
      */
     public function edit($id)
     {
-        //
+         $sub_city  = SubCity::findOrFail($id);
+         $cities = City::all();
+         return view('backend.setup_configurations.sub-city.edit', compact('cities','sub_city'));
     }
 
     /**
@@ -85,7 +87,14 @@ class SubCityController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $sub_city = SubCity::findOrFail($id);
+        $sub_city->name = $request->name;
+        $sub_city->city_id = $request->city_id;
+        $sub_city->cost = $request->cost;
+        $sub_city->save();
+
+        flash(translate('Sub City has been updated successfully'))->success();
+        return back();
     }
 
     /**
@@ -96,6 +105,10 @@ class SubCityController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $sub_city = SubCity::findOrFail($id);
+        SubCity::destroy($id);
+
+        flash(translate('Sub City has been deleted successfully'))->success();
+        return redirect()->route('sub-city.index');
     }
 }

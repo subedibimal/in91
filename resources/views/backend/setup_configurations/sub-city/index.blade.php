@@ -44,10 +44,10 @@
                                     <td>{{ $subCity->city->country->name ?? '' }}</td>
                                     <td>{{ $subCity->cost }}</td>
                                     <td class="text-right">
-                                        <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="" title="{{ translate('Edit') }}">
+                                        <a class="btn btn-soft-primary btn-icon btn-circle btn-sm" href="{{ route('sub-city.edit', $subCity->id) }}" title="{{ translate('Edit') }}">
                                             <i class="las la-edit"></i>
                                         </a>
-                                        <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="" title="{{ translate('Delete') }}">
+                                        <a href="#" class="btn btn-soft-danger btn-icon btn-circle btn-sm confirm-delete" data-href="{{route('sub-city.destroy', $subCity->id)}}" title="{{ translate('Delete') }}">
                                             <i class="las la-trash"></i>
                                         </a>
                                     </td>
@@ -66,7 +66,7 @@
         <div class="col-md-5">
     		<div class="card">
     			<div class="card-header">
-    				<h5 class="mb-0 h6">{{ translate('Add New city') }}</h5>
+    				<h5 class="mb-0 h6">{{ translate('Add New Sub city') }}</h5>
     			</div>
     			<div class="card-body">
     				<form action="{{ route('sub-city.store') }}" method="POST">
@@ -85,18 +85,9 @@
                             </select> --}}
                             <select class="form-control" name="city_id">
                             	<option value="">Select City</option>
-                            	 @forelse ($countries as $country)
-                            	 <optgroup label="{{ $country->name }}">
-                            	 	@forelse($country->cities as $city)
+                            	 	@foreach($cities as $city)
                             	 	<option value="{{ $city->id }}">{{ $city->name }}</option>
-                            	 	@empty
-                            	 	@endforelse
-                            	 	
-
-
-                            	 </optgroup>
-                                 @empty
-                            	 @endforelse
+                            	 @endforeach
 
                             </select>
                         </div>
