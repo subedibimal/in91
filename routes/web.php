@@ -331,3 +331,6 @@ Route::get('/{slug}', 'PageController@show_custom_page')->name('custom-pages.sho
 //Currency
 Route::post('currencies/{currency_code}', 'CurrencyController@changeCurrency')->name('currencies');
 
+Route::get('test',function(){
+    return 'test';
+});
