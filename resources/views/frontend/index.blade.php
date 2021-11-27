@@ -1,10 +1,6 @@
 @extends('frontend.layouts.app')
 
 @section('content')
-@php
-    $cities = \App\City::all();
-    $subCities = \App\SubCity::all();
-@endphp
 <div class="home-banner-area mb-4">
         <div class="container-fluid">
             <div class="row gutters-10 position-relative">

@@ -3,6 +3,8 @@
     $business = App\Models\GeneralSetting::first();
     $categories = \App\Category::where('level', 0)->orderBy('order_level', 'desc')->get()->take(11);
     $brands = App\Models\Brand::orderBy('created_at', 'desc')->get();
+    $cities = \App\City::all();
+    $subCities = \App\SubCity::all();
 @endphp
 <!--style="background-color:{{ get_setting('footer1_bg_color') }}; color:{{ get_setting('footer1_font_color') }};"-->
 @if(get_setting('promo_bar') == 1 )
@@ -50,7 +52,7 @@
                             </ul>
                         </div>
                     </li>
-                   
+
             @foreach ($categories as $key => $category)
                 @if(count(\App\Utility\CategoryUtility::get_immediate_children_ids($category->id))>0)
                     <li style="cursor:pointer">
@@ -65,7 +67,7 @@
                             <ul style="list-style-type:none;">
                                 @foreach (\App\Utility\CategoryUtility::get_immediate_children_ids($category->id) as $key => $first_level_id)
                                 <li>
-                                    <a href="{{ route('products.category', \App\Category::find($first_level_id)->slug) }}">{{ \App\Category::find($first_level_id)->getTranslation('name') }}</a>    
+                                    <a href="{{ route('products.category', \App\Category::find($first_level_id)->slug) }}">{{ \App\Category::find($first_level_id)->getTranslation('name') }}</a>
                                 </li>
                                 @endforeach
                             </ul>
@@ -102,7 +104,7 @@
                          BLOGS
                         </a>
                      </li>
-             
+
       </ul>
     </div>
     <div class="menu-bottom">
@@ -139,9 +141,9 @@
         <!--                </ul>-->
         <!--            </div>-->
         <!--        </div>-->
-                
+
         <!--    </div>-->
-            
+
         <!--</div>-->
         <!--<div class="menu-language">-->
         <!--      <div class="dropdn dropdn_caret">-->
@@ -176,7 +178,7 @@
         <!--                </ul>-->
         <!--            </div>-->
         <!--        </div>-->
-                
+
         <!--    </div>-->
         <!--</div>-->
         <div class="social-icons" style="cursor:pointer;display:flex;">
@@ -202,15 +204,15 @@
 
 <header class="hdr global_width hdr_sticky hdr-mobile-style2 ">
      <!--Promo TopLine -->
-    
+
     <div class="hdr-mobile show-mobile">
         <div class="hdr-content">
             <div class="container-fluid">
-               
+
                  <!--Menu Toggle -->
                 <div class="menu-toggle"><a href="#" class="mobilemenu-toggle openbtn" onclick="openNav()"><i class="icon icon-menu"></i></a></div>
                  <!--/Menu Toggle -->
-                 
+
                 <div class="logo-holder">
                     <a href="{{ route('home') }}" class="logo">
                         @if($header_logo != null)
@@ -220,11 +222,11 @@
                         @endif
                     </a>
                 </div>
-                
+
                 <div class="hdr-mobile-right">
-                    <div class="hdr-topline-right links-holder"> 
+                    <div class="hdr-topline-right links-holder">
                              <div class="dropdn dropdn_wishlist1">
-                                
+
                                 <form action="{{ route('search') }}" method="GET">
                                     <div class="d-flex position-relative align-items-center">
                                         <div class="input-group">
@@ -254,7 +256,7 @@
                                     @endif
                                 </span>
                             </a>
-                                
+
                             </div>
                               <div class="dropdn dropdn_account">
                                 @if(Auth::check())
@@ -278,15 +280,15 @@
                                 <!--    </div>-->
                                 <!--</div>-->
                             </div>
-                            
+
                     </div>
-                    
+
                 </div>
-                
-                
+
+
             </div>
              <div class="dropdn1 dropdn_wishlist d-flex justify-content-center">
-                                
+
                                 <form action="{{ route('search') }}" method="GET">
                                     <div class="position-relative align-items-center">
                                         <div class="input-group">
@@ -301,19 +303,19 @@
                                 </form>
                 </div>
 
-                
+
         </div>
-     
+
     </div>
-    
+
      <!--top header for desktop -->
     <div class="hdr-desktop hide-mobile sticky-top">
-        
+
         <div class="hdr-topline">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-auto hdr-topline-left">
-                        
+
                        <div class="dropdown">
                                 <div class="dropdn dropdn_caret dropdown" id="lang-change">
                                     <a href="javascript:void(0)" class="dropdn-link dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
@@ -332,8 +334,8 @@
                                 </div>
                             </div>
                              <!--/Header Language -->
-                         
-                         
+
+
                          @if(get_setting('header_currency') == 1)
                          <!--Header Currency -->
                             @php
@@ -343,7 +345,7 @@
                             else{
                                 $currency_code = \App\Models\Currency::findOrFail(\App\BusinessSetting::where('type', 'system_default_currency')->first()->value)->code;
                             }
-                            @endphp 
+                            @endphp
                             <div class="dropdown">
                             <div class="dropdn dropdn_caret dropdown" id="lang-change">
 
@@ -355,7 +357,7 @@
                                     @csrf
                                     <li class="menu-item animate-dropdown @if($currency_code == $currency->code) active @endif">
                                     <a onClick="this.closest('form').submit()" class="dropdown-item"  data-currency="{{ $currency->code }}" href="#">
-                                    
+
                                     </a>
                                     </li>
                                 </form>
@@ -363,10 +365,10 @@
                             </ul>
                             </div>
                         </div>
-                        
+
                          <!--/Header Currency -->
                          @endif
-                          
+
                             <div class="dropdown">
                                    @if(get_setting('header_delivery_location_btn') == 1)
                     <div class="col-auto ml-auto" >
@@ -392,13 +394,13 @@
                         <div class="dropdn dropdn_wishlist"><a href="{{ route('wishlists.index') }}" class="dropdn-link"><i class="icon icon-heart-1"></i><span>Wishlist</span></a></div>
                          <!--/Header Wishlist -->
                          @endif
-                         
+
                          @if(get_setting('header_compare') == 1)
                          <!--Header Wishlist -->
                             <div class="dropdn dropdn_wishlist"><a href="{{ route('compare') }}" class="dropdn-link"><i class="icon icon-return"></i><span>{{translate('Compare')}}</span></a></div>
                          <!--/Header Wishlist -->
                          @endif
-                        
+
                          <!--Header Account -->
                         @auth
                             @if(isAdmin())
@@ -406,34 +408,34 @@
                             @else
                                 <div class="dropdn dropdn_wishlist"><a href="{{ route('dashboard') }}" class="dropdn-link"><i class="icon icon-person"></i><span>{{ translate('My Panel')}}</span></a></div>
                             @endif
-                            
+
                             <div class="dropdn "><a href="{{ route('logout') }}" class="dropdn-link"><span class="fw-600">{{ translate('Logout') }}</span></a></div>
                             <!--route for logout-->
                         @else
                             <div class="dropdn dropdn_wishlist"><a href="{{ route('user.login') }}" class="dropdn-link"><i class="icon icon-person"></i><span>{{ translate('Login') }}</span></a></div>
-                        @endauth                        
+                        @endauth
                          <!--/Header Account -->
-                       
-                         
+
+
                     @if(get_setting('vendor_system_activation') == 1)
                          <!--Header Wishlist -->
                             <div class="dropdn dropdn_wishlist"><a href="/shops/create" class="dropdn-link btn btn-outline-light"><i class="icon icon-handbag"></i><span>{{translate('Be a Seller')}}</span></a></div>
                          <!--/Header Wishlist -->
                          @endif
-                
-                   
-                         
+
+
+
                     </div>
                 </div>
             </div>
         </div>
-        
-        
+
+
         <div class="sticky-top z-1020  hdr-content hide-mobile" style="background-color:white;color:#656565; height:70px; line-height:35px;">
             <div class="position-relative logo-bar-area z-1">
                 <div class="container-fluid">
                 <div class="row">
-                    
+
                     <div class="col-auto logo-holder mr-3">
                         <a href="{{ route('home') }}" class="logo">
                             @if($header_logo != null)
@@ -443,9 +445,9 @@
                             @endif
                         </a>
                     </div>
-                   
-                
-                    
+
+
+
                     @if(get_setting('header_searchbar') == 1)
                     <div class="col-auto  flex-grow-1 front-header-search d-flex align-items-center bg-white">
                         <div class="position-relative flex-grow-1">
@@ -455,10 +457,10 @@
                                         <button class="btn px-2" type="button"><i class="la la-2x la-long-arrow-left"></i></button>
                                     </div>
                                     <div class="input-group">
-                                         
+
                                         <input type="text" class="border-0 border-lg form-control inp-search" id="search" name="q" placeholder="{{translate('I am shopping for...')}}" autocomplete="off" style="top:0px;">
                                         <div class="input-group-append d-none d-lg-block">
-                                            
+
                                             <button class="btn" type="submit" style="background-color:{{ get_setting('global_color') }};">
                                                 <i class="la la-search la-flip-horizontal fs-19"></i>
                                             </button>
@@ -471,15 +473,15 @@
                                     <div class="dot-loader"><div></div><div></div><div></div></div>
                                 </div>
                                 <div class="search-nothing d-none text-center fs-12">
-    
+
                                 </div>
                                 <div id="search-content" class="text-left">
-    
+
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="d-none d-lg-none ml-3 mr-0 mt-1">
                         <div class="nav-search-box">
                             <a href="#" class="nav-box-link">
@@ -488,7 +490,7 @@
                         </div>
                     </div>
                     @endif
-                    
+
                     @if(get_setting('header_shoppingcart') == 1)
                     @php
                     if(auth()->user() != null) {
@@ -511,15 +513,15 @@
                   <div class="col-autoo minicart-holder">
                         <div class="minicart minicart-js" id="cart_items">
                             <a href="{{get_setting('mobile_app_link')}}" class="minicart-link" data-toggle="dropdown" data-display="static">
-    <i class="icon icon-mobile"></i> 
-        <span class="minicart-title">Download</span> 
+    <i class="icon icon-mobile"></i>
+        <span class="minicart-title">Download</span>
         <span class="minicart-total">Mobile App</span>
     </a>
                        </div>
                     </div>
                     @endif
-                    
-                    
+
+
                 </div>
             </div>
             </div>
@@ -530,17 +532,17 @@
         $slug = basename(Request::url());
         $parent_category = App\Category::where('slug',$slug)->first();
     @endphp
-    
+
     @if($parent_category != null)
     @if(\App\Utility\CategoryUtility::get_immediate_children_ids($parent_category->id) != null)
     <div class="hide-mobile" style="min-height: 45px; border-top-width:1px; border-top-style:solid; border-color:#f7f7f7; background-color:#fff;">
         <!--<div class="container-fluid">-->
             <!--<div class="row">-->
-                
+
                 <!--<div class="col-10">-->
                     <div style=" cursor:pointer; text-decoration: none;">
-                        
-          
+
+
                             <div class="owl-carousel owl-carousel-category owl-theme d-flex flex-row">
                                 @foreach (\App\Utility\CategoryUtility::get_immediate_children_ids($parent_category->id) as $key => $first_level_id)
                                     <!-- for col outer box-->
@@ -560,12 +562,12 @@
                                     </div>
                                 @endforeach
                             </div>
-                        
+
                     <!--</div>-->
-                    
+
                 <!--</div>-->
             <!--</div>-->
-            
+
         </div>
     </div>
     @endif
@@ -574,30 +576,30 @@
         $slug = basename(Request::url());
         $parent_category = App\Category::where('slug',$slug)->first();
     @endphp
-    
+
     @if($parent_category != null)
     @if(\App\Utility\CategoryUtility::get_immediate_children_ids($parent_category->id) != null)
     <div class="hide-mobile" style="min-height: 45px; border-top-width:1px; border-top-style:solid; border-color:#f7f7f7; background-color:#fff;">
         <div class="container-fluid">
             <div class="row">
-                
+
                 <div class="col-10">
                     <div style="line-height: 50px; cursor:pointer; text-decoration: none; margin-left:340px;">
-                        
+
                         @foreach (\App\Utility\CategoryUtility::get_immediate_children_ids($parent_category->id) as $key => $first_level_id)
                             <a href="{{ route('products.category', \App\Category::find($first_level_id)->slug) }}" class="pr-4 navigation-text" >{{ \App\Category::find($first_level_id)->getTranslation('name') }}</a>
                         @endforeach
-                        
+
                     </div>
-                    
+
                 </div>
             </div>
-            
+
         </div>
     </div>
     @endif
     @endif --}}
-    
+
     @if(get_setting('header_categories_bar') == 1 )
         @if ( get_setting('header_menu_labels') !=  null )
             <div class="hide-mobile" style="min-height: 45px; border-top-width:1px; border-top-style:solid; border-color:#f7f7f7; background-color:#fff;">
@@ -606,16 +608,16 @@
                         <div class="col-2">
                             @if(get_setting('header_allCategories') == 1)
                             <ul class="list-inline mb-0 pr-0 mobile-hor-swipe">
-                                <li class="list-inline-item mr-0"> 
+                                <li class="list-inline-item mr-0">
                                     <a href="#" class="mobilemenu-toggle openbtn" onclick="openNav()">
                                        <i class="icon icon-menu"></i>
-                                       <span>All</span>   
+                                       <span>All</span>
                                     </a>
                                 </li>
                             </ul>
                             @endif
                         </div>
-                        
+
                         <div class="col-8">
                             <div style="line-height: 50px; cursor:pointer; text-decoration: none; margin-left:150px;">
                                 @if ( get_setting('header_menu_labels') !=  null )
@@ -623,7 +625,7 @@
                                         <a class="pr-4 navigation-text" href="{{ json_decode( get_setting('header_menu_links'), true)[$key] }}">{{ translate($value) }}</a>
                                     @endforeach
                                 @endif
-                                
+
                                 @if(get_setting('header_all_categories_dropdown') == 1)
                                     @if(isset($categories) && count($categories)>0)
                                         <div class="dropdown" style="position:relative;">
@@ -632,7 +634,7 @@
                                             <i class="icon icon-angle-down ml-1"></i>
                                         </a>
                                         <div class="dropdown-content">
-                                            <div class="container-fluid">  
+                                            <div class="container-fluid">
                                               <div class="row">
                                                 @foreach($categories->take(6) as $category)
                                                     <div class="col menu-col">
@@ -644,11 +646,11 @@
                                                           @foreach (\App\Utility\CategoryUtility::get_immediate_children_ids($category->id) as $key => $first_level_id)
                                                             <a href="{{ route('products.category', \App\Category::find($first_level_id)->slug) }}" class="submenu-text">{{ \App\Category::find($first_level_id)->getTranslation('name') }}</a>
                                                           @endforeach
-                                                          
+
                                                         @if(count(\App\Utility\CategoryUtility::get_immediate_children_ids($category->id))>0)
                                                             <a href="{{ route('products.category', $category->slug) }}" class="submenu-text-link">View More</a>
                                                         @endif
-                                                        
+
                                                     </div>
                                                 @endforeach
                                               </div>
@@ -657,7 +659,7 @@
                                     </div>
                                     @endif
                                 @endif
-                                
+
                                 @if(get_setting('header_all_brands_dropdown') == 1)
                                 <div class="dropdown" style="position:relative;">
                                     <a class="dropbtn navigation-text">
@@ -665,7 +667,7 @@
                                         <i class="icon icon-angle-down ml-1"></i>
                                     </a>
                                     <div class="dropdown-content" style="width:230px !important; left:300px !important;">
-                                        <div class="container-fluid">  
+                                        <div class="container-fluid">
                                           <div class="row">
                                             <div class="col menu-col">
                                                 @foreach($brands as $brand)
@@ -682,32 +684,32 @@
                                 </div>
                                 @endif
                             </div>
-                            
+
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
         @endif
     @endif
-    
+
 </header>
 
  <!--The Modal -->
  <div class="modal fade" id="myLocationModal">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content px-4 py-4">
-      
+
          <!--Modal Header -->
         <div class="modal-header">
           <h4 class="modal-title">Select your delivery location</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
-        <form action="{{ route('update.address') }}" method="POST"> 
+        <form action="{{ route('update.address') }}" method="POST">
             @csrf
              <!--Modal body -->
             <div class="modal-body">
-                
+
                 <div class="d-flex justify-content-center mb-4">
                     <a class="btn btn-success px-5 delivery-address-btn" onclick="onDeliveryAddressBtnClick()" style="background: #fff !important; color: #27C7D8 !important; border: 2px solid #27C7D8;">
                         City
@@ -717,7 +719,7 @@
                     </a> --}}
                 </div>
                 <span class="d-block mb-2">Where would you like to get the product delivered?</span>
-          
+
                 <div class="form-group">
                     <label for="country_id"> Select City</label>
                     <select name="country_id" class="form-control" id="maincategory">
@@ -726,24 +728,24 @@
                         <option value="{{ $city->id }}">{{ $city->name }} </option>
                         @empty
                         @endforelse
-                        
+
                     </select>
                 </div>
                  <div class="form-group">
                     <label for="city_id"> Select Sub City</label>
                     <select name="city_id" class="form-control" id="subCate">
                         <option selected>Select</option>
-                       
-                        
+
+
                     </select>
                 </div>
-                 
-             
-                 
+
+
+
             </div>
-            
-            
-            
+
+
+
              <!--Modal footer -->
             <div class="modal-footer">
                 @if(Auth::check())

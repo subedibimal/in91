@@ -505,7 +505,7 @@
                         <select class="form-control aiz-selectpicker" name="locations[]" id="locations" data-live-search="true" multiple>
                             <option value="" disabled>{{ translate('Select Locations') }}</option>
                             @foreach (\App\SubCity::all() as $sub_city)
-                            <option value="{{ $sub_city->id }}" @php if (in_array($sub_city->id, json_decode($product->locations))) echo 'selected' @endphp>{{ $sub_city->name }}</option>
+                            <option value="{{ $sub_city->id }}" @php if (in_array($sub_city->id, json_decode($product->locations ?? '') ?? [])) echo 'selected' @endphp>{{ $sub_city->name }}</option>
                             @endforeach
                         </select>
                     </div>
