@@ -432,6 +432,23 @@
     <div class="col-lg-4">
         <div class="card">
             <div class="card-header">
+                <h5 class="mb-0 h6">
+                    {{translate('Locations')}}
+                </h5>
+            </div>
+
+            <div class="card-body">
+                <select class="form-control aiz-selectpicker" name="locations[]" id="locations" data-live-search="true" multiple>
+                    <option value="" disabled>{{ translate('Select Locations') }}</option>
+                    @foreach (\App\SubCity::all() as $sub_city)
+                    <option value="{{ $sub_city->id }}" @php if (in_array($sub_city->id, json_decode($product->locations ?? null) ?? [])) echo 'selected' @endphp>{{ $sub_city->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
                 <h5 class="mb-0 h6" class="dropdown-toggle" data-toggle="collapse" data-target="#collapse_2">
                     {{translate('Shipping Configuration')}}
                 </h5>
