@@ -281,7 +281,7 @@
                             <div class="col-md-7 ">
                                     <input type="text" class="form-control" name="affiliate_link" value="{{$product->affiliate_link}}">
                                     <span></span>
-                              
+
                             </div>
                         </div>
                         <div class="form-group row">
@@ -289,7 +289,7 @@
                             <div class="col-md-7 ">
                                     <input type="text" class="form-control" name="buy_button_name" value="{{$product->buy_button_name}}">
                                     <span></span>
-                              
+
                             </div>
                         </div>
                     </div>
@@ -358,11 +358,11 @@
                         </div>
                     </div>
                 </div>
-                
+
                 @php
                     $wholesale = App\Models\Wholesale::where('product_id', $product->id)->first();
                 @endphp
-                
+
                 <div class="card">
                     <div class="card-header">
                         <h5 class="mb-0 h6">{{translate('Wholesale Quantity')}}</h5>
@@ -406,7 +406,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="card">
                     <div class="card-header">
                         <h5 class="mb-0 h6">{{translate('Product Description')}}</h5>
@@ -493,6 +493,23 @@
             </div>
 
             <div class="col-lg-4">
+
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0 h6">
+                            {{translate('Locations')}}
+                        </h5>
+                    </div>
+
+                    <div class="card-body">
+                        <select class="form-control aiz-selectpicker" name="locations[]" id="locations" data-live-search="true" multiple>
+                            <option value="" disabled>{{ translate('Select Locations') }}</option>
+                            @foreach (\App\SubCity::all() as $sub_city)
+                            <option value="{{ $sub_city->id }}" @php if (in_array($sub_city->id, json_decode($product->locations))) echo 'selected' @endphp>{{ $sub_city->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
 
                 <div class="card">
                     <div class="card-header">
@@ -709,7 +726,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="card">
                     <div class="card-header">
                         <h5 class="mb-0 h6">{{translate('Wholesale Option')}}</h5>
@@ -828,7 +845,7 @@
                         @endforeach
                     </div>
                 </div>
-                
+
                 <div class="card">
                     <div class="card-header">
                         <h5 class="mb-0 h6">{{translate('Options')}}</h5>
@@ -858,7 +875,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="card">
                     <div class="card-header">
                         <h5 class="mb-0 h6">{{translate('Return & Warranty')}}</h5>
@@ -877,7 +894,7 @@
                             </label>
                             <input type="text" name="warranty_time" value="{{ $product->warranty_time }}" class="form-control" placeholder="Enter warranty time...">
                         </div>
-                        
+
                     </div>
                 </div>
 

@@ -227,7 +227,7 @@
                             <div class="col-md-7 ">
                                     <input type="text" class="form-control" name="affiliate_link">
                                     <span></span>
-                              
+
                             </div>
                         </div>
                         <div class="form-group row">
@@ -235,7 +235,7 @@
                             <div class="col-md-7 ">
                                     <input type="text" class="form-control" name="buy_button_name">
                                     <span></span>
-                              
+
                             </div>
                         </div>
                     </div>
@@ -283,7 +283,7 @@
                                 </select>
                             </div>
                         </div>
-                        
+
                         <div id="show-hide-div">
                             <div class="form-group row">
                                 <label class="col-md-3 col-from-label">{{translate('Quantity')}} <span class="text-danger">*</span></label>
@@ -306,7 +306,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="card">
                     <div class="card-header">
                         <h5 class="mb-0 h6">{{translate('Wholesale Quantity')}}</h5>
@@ -350,7 +350,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="card">
                     <div class="card-header">
                         <h5 class="mb-0 h6">{{translate('Product Description')}}</h5>
@@ -436,6 +436,23 @@
                 <div class="card">
                     <div class="card-header">
                         <h5 class="mb-0 h6">
+                            {{translate('Locations')}}
+                        </h5>
+                    </div>
+
+                    <div class="card-body">
+                        <select class="form-control aiz-selectpicker" name="locations[]" id="locations" data-live-search="true" multiple>
+                            <option value="" disabled>{{ translate('Select Locations') }}</option>
+                            @foreach (\App\SubCity::all() as $sub_city)
+                            <option value="{{ $sub_city->id }}">{{ $sub_city->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0 h6">
                             {{translate('Shipping Configuration')}}
                         </h5>
                     </div>
@@ -493,7 +510,7 @@
                             </div>
                             @endforeach
                         </div>
-                        
+
                         <div class="form-group row">
                             <label class="col-md-6 col-from-label">{{translate('Is Product Quantity Mulitiply')}}</label>
                             <div class="col-md-6">
@@ -595,7 +612,7 @@
                         @endif
                     </div>
                 </div>
-                
+
                 <div class="card">
                     <div class="card-header">
                         <h5 class="mb-0 h6">{{translate('Featured')}}</h5>
@@ -629,7 +646,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="card">
                     <div class="card-header">
                         <h5 class="mb-0 h6">{{translate('Wholesale Option')}}</h5>
@@ -646,7 +663,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="card">
                     <div class="card-header">
                         <h5 class="mb-0 h6">{{translate('Flash Deal')}}</h5>
@@ -729,7 +746,7 @@
                         @endforeach
                     </div>
                 </div>
-                
+
                 <div class="card">
                     <div class="card-header">
                         <h5 class="mb-0 h6">{{translate('Options')}}</h5>
@@ -759,7 +776,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="card">
                     <div class="card-header">
                         <h5 class="mb-0 h6">{{translate('Return & Warranty')}}</h5>
@@ -778,10 +795,10 @@
                             </label>
                             <input type="text" name="warranty_time" class="form-control" placeholder="Enter warranty time...">
                         </div>
-                        
+
                     </div>
                 </div>
-                
+
             </div>
             <div class="col-12">
                 <div class="btn-toolbar float-right mb-3" role="toolbar" aria-label="Toolbar with button groups">
@@ -880,7 +897,7 @@
         $.each($("#choice_attributes option:selected"), function(){
             add_more_customer_choice_option($(this).val(), $(this).text());
         });
-        
+
         update_sku();
     });
 

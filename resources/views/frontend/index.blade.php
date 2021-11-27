@@ -1,6 +1,10 @@
 @extends('frontend.layouts.app')
 
 @section('content')
+@php
+    $cities = \App\City::all();
+    $subCities = \App\SubCity::all();
+@endphp
 <div class="home-banner-area mb-4">
         <div class="container-fluid">
             <div class="row gutters-10 position-relative">
@@ -47,9 +51,9 @@
                     $num_todays_deal = count(filter_products(\App\Product::where('published', 1)->where('todays_deal', 1 ))->get());
                     $featured_categories = \App\Category::where('featured', 1)->get();
                 @endphp
-                
+
                 <div class="col-lg-12">
-                    
+
                  {{--   @if (get_setting('home_slider_images') != null)
                     <div class="owl-carousel owl-carousel-slider owl-theme mb-3 main-home-slider">
                         @php $slider_images = json_decode(get_setting('home_slider_images'), true);  @endphp
@@ -61,7 +65,7 @@
                     </div>
                     @endif
                 --}}
-                    
+
 
                     @if (count($featured_categories) > 0)
                     <!-- for row -->
@@ -87,7 +91,7 @@
                         </div>
                     </div>
                     @endif
-                    
+
                 </div>
 
             </div>
@@ -316,7 +320,7 @@
     <section class="mb-4">
         <div class="container-fluid">
             <div class="row">
-                
+
                     <div class="col-lg-12">
                         <div class="d-flex mb-3 align-items-baseline border-bottom">
                             <h3 class="h6 fw-700 mb-0">
@@ -325,9 +329,9 @@
                             <a href="{{ route('categories.all') }}" class="ml-auto mr-0 btn-decor">{{ translate('View All') }}</a>
                             <!--<a href="{{ route('categories.all') }}" class="ml-auto mr-0 btn btn-primary btn-sm shadow-md">{{ translate('View All Categories') }}</a>-->
                         </div>
- 
+
                         @php $top10_categories = json_decode(get_setting('top10_categories')); @endphp
-                        
+
                         <!-- for row -->
                         <div class="container-fluid mb-4" style="text-align: center;">
                             <div class="owl-carousel owl-carousel-category owl-theme d-flex flex-row justify-content-around">
@@ -354,8 +358,8 @@
                             </div>
                         </div>
                     </div>
-                
-                
+
+
                     <div class="col-lg-12">
                         <div class="d-flex mb-3 align-items-baseline border-bottom">
                             <h3 class="h6 fw-700 mb-0">
@@ -363,9 +367,9 @@
                             </h3>
                             <a href="{{ route('brands.all') }}" class="ml-auto mr-0 btn-decor">{{ translate('View All') }}</a>
                         </div>
-                            
+
                         @php $top10_brands = json_decode(get_setting('top10_brands')); @endphp
-                        
+
                         <!-- for row -->
                         <div class="container-fluid mb-4" style="text-align: center;">
                             <div class="owl-carousel owl-carousel-category owl-theme d-flex flex-row justify-content-around">
@@ -392,13 +396,13 @@
                             </div>
                         </div>
                     </div>
-                
+
             </div>
         </div>
     </section>
-    
-   
-    
+
+
+
 @endsection
 
 @section('script')
