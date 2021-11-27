@@ -148,7 +148,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
    {
-    //   dd($request->all());
+    //    dd($request->all());
         $refund_request_addon = \App\Addon::where('unique_identifier', 'refund_request')->first();
 
         $product = new Product;
@@ -165,6 +165,14 @@ class ProductController extends Controller
             $product->affiliate_link = $request->affiliate_link;
             $product->buy_button_name = $request->buy_button_name;
         }
+
+        if (!empty($request->locations)) {
+            $product->locations = json_encode($request->locations);
+        }
+        else {
+            $product->locations = json_encode(array());
+        }
+
         $product->product_type = $request->product_type ?? "";
         $product->category_id = $request->category_id;
         $product->brand_id = $request->brand_id;
@@ -187,22 +195,22 @@ class ProductController extends Controller
         $product->min_qty = $request->min_qty;
         $product->low_stock_quantity = $request->low_stock_quantity;
         $product->stock_visibility_state = $request->stock_visibility_state;
-        
+
         $product->return_days       = $request->return_days;
         $product->warranty_time       = $request->warranty_time;
-        
+
         if ($request->has('customer_support')) {
             $product->customer_support = 1;
         }else{
             $product->customer_support = 0;
         }
-        
+
         if ($request->has('genuine')) {
             $product->genuine = 1;
         }else{
             $product->genuine = 0;
         }
-        
+
         $tags = array();
         if($request->tags[0] != null){
             foreach (json_decode($request->tags[0]) as $key => $tag) {
@@ -237,7 +245,7 @@ class ProductController extends Controller
         if ($request->has('is_quantity_multiplied')) {
             $product->is_quantity_multiplied = 1;
         }
-        
+
         $product->meta_title = $request->meta_title;
         $product->meta_description = $request->meta_description;
 
@@ -405,16 +413,15 @@ class ProductController extends Controller
             $product_stock->save();
         }
         //combinations end
-
 	    $product->save();
 
         // Product Translations
-        $product_translation = ProductTranslation::firstOrNew(['lang' => env('DEFAULT_LANGUAGE'), 'product_id' => $product->id]);
+        $product_translation = ProductTranslation::firstOrNew(['lang' => env('DEFAULT_LANGUAGE') ?? 'en', 'product_id' => $product->id]);
         $product_translation->name = $request->name;
         $product_translation->unit = $request->unit;
         $product_translation->description = $request->description;
         $product_translation->save();
-        
+
         $wholesale = new Wholesale;
         $wholesale->product_id = Wholesale::firstOrNew(['product_id' => $product->id]);
         $wholesale->quantity_f1 = $request->quantity_f1;
@@ -520,19 +527,19 @@ class ProductController extends Controller
 
         $product->return_days       = $request->return_days;
         $product->warranty_time       = $request->warranty_time;
-        
+
         if ($request->has('customer_support')) {
             $product->customer_support = 1;
         }else{
             $product->customer_support = 0;
         }
-        
+
         if ($request->has('genuine')) {
             $product->genuine = 1;
         }else{
             $product->genuine = 0;
         }
-        
+
         if ($refund_request_addon != null && $refund_request_addon->activated == 1) {
             if ($request->refundable != null) {
                 $product->refundable = 1;
@@ -583,18 +590,18 @@ class ProductController extends Controller
                 $product->shipping_cost = json_encode($request->shipping_cost);
             }
         }
-        
+
         if ($request->has('is_quantity_multiplied')) {
             $product->is_quantity_multiplied = 1;
         }
         if ($request->has('cash_on_delivery')) {
             $product->cash_on_delivery = 1;
         }
-        
+
         if ($request->has('featured')) {
             $product->featured = 1;
         }
-        
+
         if ($request->has('todays_deal')) {
             $product->todays_deal = 1;
         }
@@ -653,6 +660,13 @@ class ProductController extends Controller
         }
         else {
             $product->attributes = json_encode(array());
+        }
+
+        if (!empty($request->locations)) {
+            $product->locations = json_encode($request->locations);
+        }
+        else {
+            $product->locations = json_encode(array());
         }
 
         $product->choice_options = json_encode($choice_options, JSON_UNESCAPED_UNICODE);
@@ -750,8 +764,8 @@ class ProductController extends Controller
                 $product_tax->save();
             }
         }
-        
-        
+
+
         $wholesale = Wholesale::firstOrNew(['product_id' => $product->id]);
         $wholesale->product_id = $product->id;
         $wholesale->quantity_f1 = $request->quantity_f1;
@@ -765,7 +779,7 @@ class ProductController extends Controller
         $wholesale->save();
 
         // Product Translations
-        $product_translation                = ProductTranslation::firstOrNew(['lang' => $request->lang, 'product_id' => $product->id]);
+        $product_translation                = ProductTranslation::firstOrNew(['lang' => $request->lang ?? 'en', 'product_id' => $product->id]);
         $product_translation->name          = $request->name;
         $product_translation->unit          = $request->unit;
         $product_translation->description   = $request->description;
@@ -791,11 +805,11 @@ class ProductController extends Controller
         foreach ($product->product_translations as $key => $product_translations) {
             $product_translations->delete();
         }
-        
+
         foreach ($product->stocks as $key => $stock) {
             $stock->delete();
         }
-        
+
         if(Product::destroy($id)){
 
             flash(translate('Product has been deleted successfully'))->success();
@@ -827,7 +841,7 @@ class ProductController extends Controller
         $product = Product::find($id);
         $product_new = $product->replicate();
         $product_new->slug = substr($product_new->slug, 0, -5).Str::random(5);
-        
+
         if($product_new->save()){
             foreach ($product->stocks as $key => $stock) {
                 $product_stock              = new ProductStock;
@@ -837,9 +851,9 @@ class ProductController extends Controller
                 $product_stock->sku         = $stock->sku;
                 $product_stock->qty         = $stock->qty;
                 $product_stock->save();
-                
+
             }
-            
+
             flash(translate('Product has been duplicated successfully'))->success();
             if(Auth::user()->user_type == 'admin' || Auth::user()->user_type == 'staff'){
               if($request->type == 'In House')
@@ -970,7 +984,7 @@ class ProductController extends Controller
         $combinations = Combinations::makeCombinations($options);
         return view('backend.product.products.sku_combinations_edit', compact('combinations', 'unit_price', 'colors_active', 'product_name', 'product'));
     }
-    
+
     public function updateAddress(Request $request)
     {
         if(Auth::check()){
@@ -983,7 +997,7 @@ class ProductController extends Controller
             return 0;
         }
     }
-    
+
     public function updatePincode(Request $request)
     {
         if(Auth::check()){
@@ -996,11 +1010,11 @@ class ProductController extends Controller
             return 0;
         }
     }
-    
+
     public function updateDeliveryAddress(Request $request)
     {
         $user = Auth::user();
-        
+
         if($request->key == "daddress")
         {
             $user->address = $request->address;

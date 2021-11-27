@@ -9,7 +9,7 @@ class Product extends Model {
 
     protected $fillable = [
         'name', 'added_by', 'user_id', 'category_id','affiliate_link','buy_button_name','product_type', 'brand_id', 'video_provider', 'video_link', 'unit_price',
-        'purchase_price', 'unit', 'slug', 'colors', 'choice_options', 'variations', 'thumbnail_img'
+        'purchase_price', 'unit', 'slug', 'colors', 'choice_options', 'variations', 'thumbnail_img','locations'
     ];
 
     public function getTranslation($field = '', $lang = false) {
@@ -36,7 +36,7 @@ class Product extends Model {
     public function user() {
         return $this->belongsTo(User::class);
     }
-    
+
      public function country() {
         return $this->belongsTo(Country::class);
     }
@@ -56,11 +56,11 @@ class Product extends Model {
     public function stocks() {
         return $this->hasMany(ProductStock::class);
     }
-    
+
     public function taxes() {
         return $this->hasMany(ProductTax::class);
     }
-    
+
     public function flash_deal_product() {
         return $this->hasOne(FlashDealProduct::class);
     }
