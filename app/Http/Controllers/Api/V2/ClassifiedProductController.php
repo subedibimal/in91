@@ -14,10 +14,13 @@ class ClassifiedProductController extends Controller
         $products = CustomerProduct::where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->paginate(10);
         //return $products;
         $products->getCollection()->transform(function($data){
+            $thumbnail_img = explode(',',$data->thumbnail_img);
+
             return [
                 'id' => $data->id,
                 'name' => $data->name,
                 'slug' => $data->slug,
+                'thumbnail_image' => api_asset($data->thumbnail_img),
                 'price' => single_price($data->unit_price),
                 'status' => $data->status,
                 'published' => $data->published
