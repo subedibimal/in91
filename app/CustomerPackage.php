@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App;
+use App\Upload;
 
 class CustomerPackage extends Model
 {
@@ -22,4 +23,7 @@ class CustomerPackage extends Model
         return $this->hasMany(CustomerPackagePayment::class);
     }
 
+    public function logo(){
+        return $this->hasOne(Upload::class,'id','logo');
+    }
 }

@@ -119,6 +119,15 @@ Route::prefix('v2/auth')->group(function () {
 
 Route::prefix('v2')->group(function () {
 
+    //By Ruban
+    //customer
+
+    Route::apiResource('classified-products', 'Api\V2\ClassifiedProductController')->middleware('auth:api');
+    Route::match(['put','patch'],'classified-products\{id}\updatePublished', 'Api\V2\ClassifiedProductController@updatePublished')->middleware('auth:api');
+    Route::get('customer-packages','Api\V2\CustomerPackageController@index');
+    Route::post('customer-packages/purchase','Api\V2\CustomerPackageController@purchase')->middleware('auth:api');
+
+
     Route::prefix('delivery-boy')->group(function () {
         Route::get('dashboard-summary/{id}', 'Api\V2\DeliveryBoyController@dashboard_summary')->middleware('auth:api');
         Route::get('deliveries/completed/{id}', 'Api\V2\DeliveryBoyController@completed_delivery')->middleware('auth:api');
@@ -134,10 +143,8 @@ Route::prefix('v2')->group(function () {
         Route::post('change-delivery-status', 'Api\V2\DeliveryBoyController@change_delivery_status')->middleware('auth:api');
     });
 
-    //By Ruban
-    //customer
-        Route::apiResource('classified-products', 'Api\V2\ClassifiedProductController')->middleware('auth:api');
-        Route::match(['put','patch'],'classified-products\{id}\updatePublished', 'Api\V2\ClassifiedProductController@updatePublished')->middleware('auth:api');
+
+
 
 
     //end
